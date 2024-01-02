@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wheel of Fortune</title>
+  <style>
+    .wheel-container {
+      position: relative;
+      width: 80vw;
+      height: 80vw;
+      margin: auto;
+    }
+
+    .pointer {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) rotate(180deg);
+      border: 15px solid transparent;
+      border-bottom: 20px solid red;
+      z-index: 999;
+    }
+
+    #addLabelInput {
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wheel-container">
+    <!-- Add the pointer element -->
+    <div class="pointer"></div>
+  </div>
+  <div>
+    <input type="text" id="addLabelInput" placeholder="Enter Label">
+    <button id="addLabelButton">Add Label</button>
+    <button id="spinWheelButton">Spin the Wheel</button>
+  </div>
+
+  <script type="module">
+    import { Wheel } from 'https://cdn.jsdelivr.net/npm/spin-wheel@4.3.1/dist/spin-wheel-esm.js';
+  
+    // Find the container element
+    const container = document.querySelector('.wheel-container');
+    const pointer = document.querySelector('.pointer');
+  
+    // Create an empty array to store labels
+    const labels = [];
+  
+    // Create the initial wheel with an empty items array
+    const wheel = new Wheel(container, { items: [] });
+  
+    // Add label button click event
+    document.getElementById('addLabelButton').addEventListener('click', function() {
+      const labelInput = document.getElementById('addLabelInput');
+      const newLabel = labelInput.value.trim();
+  
+      if (newLabel !== '') {
+        // Add the new label to the labels array
+        labels.push(newLabel);
+  
+        // Update the wheel with the new labels
+        wheel.init({ items: labels.map(label => ({ label })) });
+      }
+    });
+  
+    // Spin the wheel button click event
+    document.getElementById('spinWheelButton').addEventListener('click', async function() {
+      // Placeholder for your logic to fetch the winning item index
+      const winningItemIndex = await fetchWinningItemIndex();
+  
+      // Generate three random numbers
+      const randomArray = new Uint32Array(3);
+      crypto.getRandomValues(randomArray);
+  
+      // Calculate the average of the three random numbers
+      const averageRandom = Array.from(randomArray).reduce((sum, num) => sum + num, 0) / 3;
+  
+      // Use the average to calculate the duration within the specified range
+      const min = 2000;
+      const max = 10000;
+      const range = max - min + 1;
+      const duration = min + (averageRandom % range);
+  
+      console.log("duration:");
+      console.log(duration);
+      console.log("winning index:");
+      console.log(winningItemIndex);
+  
+      const easing = 'cubicOut'; // Use a string indicating the easing function type
+      wheel.spinToItem(winningItemIndex, duration, false);
+      getWinningLabel(winningItemIndex);
+
+    });
+  
+    // Placeholder for the fetchWinningItemIndex function
+    async function fetchWinningItemIndex() {
+      // Replace this with your actual logic to determine the winning item index
+      // For now, let's return a random index within the current number of items
+      return Math.floor(Math.random() * labels.length);
+    }
+  
+    function getWinningLabel(winningIndex) {
+      // Check if the index is within the valid range
+      if (winningIndex >= 0 && winningIndex < wheel.items.length) {
+        // Retrieve the label from the wheel's items
+        console.log(wheel.items[winningIndex].label)
+        return wheel.items[winningIndex].label;
+      } else {
+        // Handle the case where the index is out of range
+        console.error("Invalid winning index:", winningIndex);
+        return null;
+      }
+    }
+
+  </script>
+</body>
+</html>
