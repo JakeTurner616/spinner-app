@@ -11,15 +11,15 @@ A simple web-based prize wheel application implemented in HTML, CSS, and JavaScr
 
 ## Library
 
-The Wheel of Fortune functionality is powered by the [spin-wheel](https://github.com/CrazyTim/spin-wheel) library.
+spinner-app's main functionalites are powered by the [spin-wheel](https://github.com/CrazyTim/spin-wheel) library licensed under [MIT](https://github.com/CrazyTim/spin-wheel/blob/main/LICENSE.md) .
 
 ## License
 
-This Wheel of Fortune application is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
+spinner-app is licensed under the GNU General Public License v3.0 - see the [LICENSE](https://github.com/JakeTurner616/spinner-app/blob/main/LICENSE) file for details.
 
-## Script Loading
+## Script import info
 
-The script is loaded using an ES6 module import statement:
+The main library script is loaded using the followng ES6 module import using jsdelivr:
 
 ```html
 <script type="module">
